@@ -14,6 +14,8 @@ const downloadBtn = document.getElementById('downloadBtn');
 const resetBtn = document.getElementById('resetBtn');
 const errorMessage = document.getElementById('errorMessage');
 const errorText = document.getElementById('errorText');
+const uploadBtn = document.getElementById('uploadBtn');
+const demoBtn = document.getElementById('demoBtn');
 
 // Event Listeners
 uploadArea.addEventListener('click', () => fileInput.click());
@@ -23,6 +25,8 @@ uploadArea.addEventListener('drop', handleDrop);
 fileInput.addEventListener('change', handleFileSelect);
 resetBtn.addEventListener('click', resetUpload);
 downloadBtn.addEventListener('click', downloadImage);
+uploadBtn.addEventListener('click', () => fileInput.click());
+demoBtn.addEventListener('click', loadDemoImage);
 
 // Drag and Drop Handlers
 function handleDragOver(e) {
@@ -78,6 +82,12 @@ function processFile(file) {
         loadingState.style.display = 'block';
         resultImage.style.display = 'none';
         downloadBtn.style.display = 'none';
+        
+        // Hide CTA buttons when preview is shown
+        const ctaButtons = document.querySelector('.cta-buttons');
+        if (ctaButtons) {
+            ctaButtons.style.display = 'none';
+        }
 
         // Process image with API
         removeBackground(file);
@@ -149,10 +159,49 @@ function resetUpload() {
     resultImage.src = '';
     hideError();
     
+    // Show CTA buttons again
+    const ctaButtons = document.querySelector('.cta-buttons');
+    if (ctaButtons) {
+        ctaButtons.style.display = 'flex';
+    }
+    
     // Clean up blob URLs
     if (downloadBtn.dataset.blobUrl) {
         URL.revokeObjectURL(downloadBtn.dataset.blobUrl);
         delete downloadBtn.dataset.blobUrl;
+    }
+}
+
+// Demo Image Handler
+async function loadDemoImage() {
+    try {
+        // Create a simple demo image (a colored rectangle with text)
+        // In a real scenario, you might want to use an actual sample image URL
+        const canvas = document.createElement('canvas');
+        canvas.width = 400;
+        canvas.height = 400;
+        const ctx = canvas.getContext('2d');
+        
+        // Draw a simple demo image
+        ctx.fillStyle = '#6366f1';
+        ctx.fillRect(0, 0, 400, 400);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 48px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('DEMO', 200, 200);
+        
+        // Convert canvas to blob
+        canvas.toBlob(async (blob) => {
+            if (blob) {
+                const file = new File([blob], 'demo-image.png', { type: 'image/png' });
+                processFile(file);
+            }
+        }, 'image/png');
+        
+    } catch (error) {
+        console.error('Error loading demo image:', error);
+        showError('Failed to load demo image. Please try uploading your own image.');
     }
 }
 
