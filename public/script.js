@@ -15,7 +15,6 @@ const resetBtn = document.getElementById('resetBtn');
 const errorMessage = document.getElementById('errorMessage');
 const errorText = document.getElementById('errorText');
 const uploadBtn = document.getElementById('uploadBtn');
-const demoBtn = document.getElementById('demoBtn');
 
 // Event Listeners
 uploadArea.addEventListener('click', () => fileInput.click());
@@ -26,7 +25,6 @@ fileInput.addEventListener('change', handleFileSelect);
 resetBtn.addEventListener('click', resetUpload);
 downloadBtn.addEventListener('click', downloadImage);
 uploadBtn.addEventListener('click', () => fileInput.click());
-demoBtn.addEventListener('click', loadDemoImage);
 
 // Drag and Drop Handlers
 function handleDragOver(e) {
@@ -172,38 +170,6 @@ function resetUpload() {
     }
 }
 
-// Demo Image Handler
-async function loadDemoImage() {
-    try {
-        // Create a simple demo image (a colored rectangle with text)
-        // In a real scenario, you might want to use an actual sample image URL
-        const canvas = document.createElement('canvas');
-        canvas.width = 400;
-        canvas.height = 400;
-        const ctx = canvas.getContext('2d');
-        
-        // Draw a simple demo image
-        ctx.fillStyle = '#6366f1';
-        ctx.fillRect(0, 0, 400, 400);
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 48px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('DEMO', 200, 200);
-        
-        // Convert canvas to blob
-        canvas.toBlob(async (blob) => {
-            if (blob) {
-                const file = new File([blob], 'demo-image.png', { type: 'image/png' });
-                processFile(file);
-            }
-        }, 'image/png');
-        
-    } catch (error) {
-        console.error('Error loading demo image:', error);
-        showError('Failed to load demo image. Please try uploading your own image.');
-    }
-}
 
 // Error Handling
 function showError(message) {
