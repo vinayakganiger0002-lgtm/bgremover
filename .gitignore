@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# API Keys (optional - uncomment if you want to exclude script.js)
+# public/script.js
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build outputs
+dist/
+build/
+.vercel
+
+# Temporary files
+*.tmp
+*.temp
+
