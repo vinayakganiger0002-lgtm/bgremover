@@ -14,7 +14,6 @@ const downloadBtn = document.getElementById('downloadBtn');
 const resetBtn = document.getElementById('resetBtn');
 const errorMessage = document.getElementById('errorMessage');
 const errorText = document.getElementById('errorText');
-const uploadBtn = document.getElementById('uploadBtn');
 
 // Event Listeners
 uploadArea.addEventListener('click', () => fileInput.click());
@@ -24,7 +23,6 @@ uploadArea.addEventListener('drop', handleDrop);
 fileInput.addEventListener('change', handleFileSelect);
 resetBtn.addEventListener('click', resetUpload);
 downloadBtn.addEventListener('click', downloadImage);
-uploadBtn.addEventListener('click', () => fileInput.click());
 
 // Drag and Drop Handlers
 function handleDragOver(e) {
@@ -80,12 +78,6 @@ function processFile(file) {
         loadingState.style.display = 'block';
         resultImage.style.display = 'none';
         downloadBtn.style.display = 'none';
-        
-        // Hide CTA buttons when preview is shown
-        const ctaButtons = document.querySelector('.cta-buttons');
-        if (ctaButtons) {
-            ctaButtons.style.display = 'none';
-        }
 
         // Process image with API
         removeBackground(file);
@@ -157,19 +149,12 @@ function resetUpload() {
     resultImage.src = '';
     hideError();
     
-    // Show CTA buttons again
-    const ctaButtons = document.querySelector('.cta-buttons');
-    if (ctaButtons) {
-        ctaButtons.style.display = 'flex';
-    }
-    
     // Clean up blob URLs
     if (downloadBtn.dataset.blobUrl) {
         URL.revokeObjectURL(downloadBtn.dataset.blobUrl);
         delete downloadBtn.dataset.blobUrl;
     }
 }
-
 
 // Error Handling
 function showError(message) {
