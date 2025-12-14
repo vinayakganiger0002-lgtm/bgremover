@@ -1,6 +1,5 @@
 // API Configuration
-const API_KEY = 'd9qf7sJUo8Fo4AHNFdFGRDmH'; // Replace with your Remove.bg or ClipDrop API key
-const API_URL = 'https://api.remove.bg/v1.0/removebg'; // Using Remove.bg API
+const BACKEND_API_URL = '/api/remove-bg';
 
 // DOM Elements
 const uploadArea = document.getElementById('uploadArea');
@@ -88,25 +87,37 @@ function processFile(file) {
 // Background Removal API Call
 async function removeBackground(file) {
     try {
-        const formData = new FormData();
-        formData.append('image_file', file);
-        formData.append('size', 'auto');
+        // Convert file to base64
+        const imageData = await fileToBase64(file);
 
-        const response = await fetch(API_URL, {
+        // Send POST request to backend endpoint
+        const response = await fetch(BACKEND_API_URL, {
             method: 'POST',
             headers: {
-                'X-Api-Key': API_KEY
+                'Content-Type': 'application/json'
             },
-            body: formData
+            body: JSON.stringify({ image: imageData })
         });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.errors?.[0]?.title || `API Error: ${response.status} ${response.statusText}`);
+            throw new Error(errorData.error || errorData.message || `API Error: ${response.status} ${response.statusText}`);
         }
 
-        const blob = await response.blob();
-        const imageUrl = URL.createObjectURL(blob);
+        // Parse JSON response
+        const data = await response.json();
+        
+        // Handle response - expect processed image as base64 or URL
+        let imageUrl;
+        if (data.image) {
+            // If response contains base64 image
+            imageUrl = data.image.startsWith('data:') ? data.image : `data:image/png;base64,${data.image}`;
+        } else if (data.url) {
+            // If response contains image URL
+            imageUrl = data.url;
+        } else {
+            throw new Error('Invalid response format from server');
+        }
 
         // Display result
         resultImage.src = imageUrl;
@@ -114,30 +125,55 @@ async function removeBackground(file) {
         loadingState.style.display = 'none';
         downloadBtn.style.display = 'inline-block';
 
-        // Store blob for download
-        downloadBtn.dataset.blobUrl = imageUrl;
+        // Store image data for download
+        downloadBtn.dataset.imageUrl = imageUrl;
         downloadBtn.dataset.filename = file.name.replace(/\.[^/.]+$/, '') + '_no_bg.png';
 
     } catch (error) {
         console.error('Error removing background:', error);
-        showError(`Failed to remove background: ${error.message}. Please check your API key and try again.`);
+        showError(`Failed to remove background: ${error.message}. Please try again.`);
         loadingState.style.display = 'none';
     }
 }
 
+// Convert file to base64 string
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            // Remove data URL prefix if present, or keep it
+            const base64 = reader.result;
+            resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
 // Download Handler
 function downloadImage() {
-    const blobUrl = downloadBtn.dataset.blobUrl;
+    const imageUrl = downloadBtn.dataset.imageUrl;
     const filename = downloadBtn.dataset.filename;
 
-    if (!blobUrl) return;
+    if (!imageUrl) return;
 
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Convert base64 to blob for download
+    fetch(imageUrl)
+        .then(res => res.blob())
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error downloading image:', error);
+            showError('Failed to download image. Please try again.');
+        });
 }
 
 // Reset Handler
@@ -149,10 +185,9 @@ function resetUpload() {
     resultImage.src = '';
     hideError();
     
-    // Clean up blob URLs
-    if (downloadBtn.dataset.blobUrl) {
-        URL.revokeObjectURL(downloadBtn.dataset.blobUrl);
-        delete downloadBtn.dataset.blobUrl;
+    // Clean up image data
+    if (downloadBtn.dataset.imageUrl) {
+        delete downloadBtn.dataset.imageUrl;
     }
 }
 
@@ -166,42 +201,4 @@ function hideError() {
     errorMessage.style.display = 'none';
 }
 
-// Alternative API Implementation (ClipDrop)
-// Uncomment and modify if using ClipDrop instead of Remove.bg
-/*
-async function removeBackgroundClipDrop(file) {
-    try {
-        const formData = new FormData();
-        formData.append('image_file', file);
-
-        const response = await fetch('https://clipdrop-api.co/remove-background/v1', {
-            method: 'POST',
-            headers: {
-                'x-api-key': API_KEY
-            },
-            body: formData
-        });
-
-        if (!response.ok) {
-            throw new Error(`API Error: ${response.status}`);
-        }
-
-        const blob = await response.blob();
-        const imageUrl = URL.createObjectURL(blob);
-
-        resultImage.src = imageUrl;
-        resultImage.style.display = 'block';
-        loadingState.style.display = 'none';
-        downloadBtn.style.display = 'inline-block';
-
-        downloadBtn.dataset.blobUrl = imageUrl;
-        downloadBtn.dataset.filename = file.name.replace(/\.[^/.]+$/, '') + '_no_bg.png';
-
-    } catch (error) {
-        console.error('Error removing background:', error);
-        showError(`Failed to remove background: ${error.message}`);
-        loadingState.style.display = 'none';
-    }
-}
-*/
 
