@@ -1,6 +1,5 @@
 // API Configuration
-const API_KEY = 'd9qf7sJUo8Fo4AHNFdFGRDmH'; // Replace with your Remove.bg or ClipDrop API key
-const API_URL = 'https://api.remove.bg/v1.0/removebg'; // Using Remove.bg API
+const API_URL = '/api/remove-bg'; // Backend API endpoint
 
 // DOM Elements
 const uploadArea = document.getElementById('uploadArea');
@@ -88,23 +87,34 @@ function processFile(file) {
 // Background Removal API Call
 async function removeBackground(file) {
     try {
-        const formData = new FormData();
-        formData.append('image_file', file);
-        formData.append('size', 'auto');
+        // Convert file to base64 for sending to backend
+        const reader = new FileReader();
+        const base64Image = await new Promise((resolve, reject) => {
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
 
+        // Send image to backend API
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {
-                'X-Api-Key': API_KEY
+                'Content-Type': 'application/json'
             },
-            body: formData
+            body: JSON.stringify({
+                image: base64Image,
+                filename: file.name,
+                imageType: file.type
+            })
         });
 
         if (!response.ok) {
+            // Try to parse error message
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.errors?.[0]?.title || `API Error: ${response.status} ${response.statusText}`);
+            throw new Error(errorData.error || `API Error: ${response.status} ${response.statusText}`);
         }
 
+        // Get the processed image as a blob
         const blob = await response.blob();
         const imageUrl = URL.createObjectURL(blob);
 
@@ -120,7 +130,7 @@ async function removeBackground(file) {
 
     } catch (error) {
         console.error('Error removing background:', error);
-        showError(`Failed to remove background: ${error.message}. Please check your API key and try again.`);
+        showError(`Failed to remove background: ${error.message}`);
         loadingState.style.display = 'none';
     }
 }
