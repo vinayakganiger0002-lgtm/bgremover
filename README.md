@@ -2,7 +2,7 @@
 
 A fast and simple web application for removing image backgrounds using AI-powered API services. Built with pure HTML, CSS, and JavaScript - no backend required.
 
-## 🚀 Features
+## 🚀 Our Features
 
 - **Instant Background Removal**: Remove backgrounds from images in seconds
 - **Drag & Drop Upload**: Easy file upload with drag-and-drop support
