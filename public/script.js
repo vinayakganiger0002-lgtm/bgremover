@@ -13,6 +13,8 @@ const downloadBtn = document.getElementById('downloadBtn');
 const resetBtn = document.getElementById('resetBtn');
 const errorMessage = document.getElementById('errorMessage');
 const errorText = document.getElementById('errorText');
+const uploadBtn = document.getElementById('uploadBtn');
+const demoBtn = document.getElementById('demoBtn');
 
 // Event Listeners
 uploadArea.addEventListener('click', () => fileInput.click());
@@ -22,6 +24,12 @@ uploadArea.addEventListener('drop', handleDrop);
 fileInput.addEventListener('change', handleFileSelect);
 resetBtn.addEventListener('click', resetUpload);
 downloadBtn.addEventListener('click', downloadImage);
+if (uploadBtn) {
+    uploadBtn.addEventListener('click', () => fileInput.click());
+}
+if (demoBtn) {
+    demoBtn.addEventListener('click', loadDemoImage);
+}
 
 // Drag and Drop Handlers
 function handleDragOver(e) {
@@ -214,4 +222,35 @@ async function removeBackgroundClipDrop(file) {
     }
 }
 */
+
+// Demo Image Handler
+async function loadDemoImage() {
+    try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 400;
+        canvas.height = 400;
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = '#6366f1';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Text
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 42px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('DEMO', canvas.width / 2, canvas.height / 2);
+
+        // Convert to blob and wrap as File
+        canvas.toBlob((blob) => {
+            if (!blob) return;
+            const file = new File([blob], 'demo-image.png', { type: 'image/png' });
+            processFile(file);
+        }, 'image/png');
+    } catch (error) {
+        console.error('Error loading demo image:', error);
+        showError('Failed to load demo image. Please try again.');
+    }
+}
 

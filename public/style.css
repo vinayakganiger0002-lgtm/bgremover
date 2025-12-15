@@ -53,6 +53,20 @@ h1 {
     color: var(--text-secondary);
 }
 
+/* CTA Buttons */
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn-large {
+    padding: 1rem 2.5rem;
+    font-size: 1.125rem;
+}
+
 main {
     flex: 1;
 }
@@ -241,6 +255,160 @@ main {
     font-weight: 500;
 }
 
+/* Benefits Section */
+.benefits-section {
+    margin: 4rem 0;
+    padding: 3rem 0;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.benefit-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.benefit-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.benefit-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.benefit-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* SEO Text Section */
+.seo-text-section {
+    margin: 2rem 0 3rem;
+}
+
+.seo-text-section p {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.975rem;
+}
+
+/* Features Section */
+.features-section {
+    margin: 4rem 0;
+    padding: 3rem 0;
+}
+
+.feature-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.feature-block:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.feature-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.feature-content p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* Why Choose Us Section */
+.why-choose-section {
+    margin: 4rem 0;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+    border-radius: 16px;
+}
+
+.why-choose-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.why-choose-text {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Info Section */
+.info-section {
+    margin: 4rem 0;
+    padding: 3rem 0;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.info-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.info-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.info-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Footer */
 footer {
     margin-top: 3rem;
     padding-top: 2rem;
@@ -250,14 +418,55 @@ footer {
     font-size: 0.875rem;
 }
 
+.footer-links {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+.footer-links span {
+    color: var(--border);
+}
+
+.footer-heart {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+.footer-copy {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     h1 {
-        font-size: 2rem;
+        font-size: 1.9rem;
     }
 
     .subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+    .btn-large {
+        width: 100%;
     }
 
     .upload-area {
@@ -279,6 +488,35 @@ footer {
 
     .btn {
         width: 100%;
+    }
+
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-block {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .feature-icon {
+        margin: 0 auto;
+    }
+
+    .why-choose-section {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .why-choose-section h2 {
+        font-size: 1.6rem;
+    }
+
+    .why-choose-text {
+        font-size: 1rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
     }
 }
 
