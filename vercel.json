@@ -2,7 +2,17 @@
   "version": 2,
   "buildCommand": null,
   "outputDirectory": "public",
+  "functions": {
+    "api/remove-bg.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
+    {
+      "source": "/api/remove-bg",
+      "destination": "/api/remove-bg"
+    },
     {
       "source": "/(.*)",
       "destination": "/$1"
