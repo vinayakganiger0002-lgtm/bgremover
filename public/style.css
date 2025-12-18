@@ -1,32 +1,40 @@
+/* Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Design tokens */
 :root {
     --primary-color: #6366f1;
     --primary-hover: #4f46e5;
     --secondary-color: #64748b;
     --background: #f8fafc;
     --surface: #ffffff;
-    --text-primary: #1e293b;
+    --text-primary: #0f172a;
     --text-secondary: #64748b;
     --border: #e2e8f0;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.08),
+               0 2px 4px -1px rgba(15, 23, 42, 0.04);
+    --shadow-lg: 0 18px 45px rgba(15, 23, 42, 0.12);
 }
 
+/* Base layout */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: var(--background);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(circle at top, #f7fbff 0, #f4f6fb 40%, #ffffff 100%);
     color: var(--text-primary);
-    line-height: 1.6;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
+/* Headings */
+h1, h2, h3 {
+    font-family: 'Montserrat', system-ui, sans-serif;
+    letter-spacing: 0.02em;
+}
+
+/* Container */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -36,9 +44,23 @@ body {
     flex-direction: column;
 }
 
+/* Header + top nav */
 header {
     text-align: center;
     margin-bottom: 3rem;
+    position: relative;
+}
+
+.main-nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.main-nav a {
+    font-size: 0.875rem;
 }
 
 h1 {
@@ -49,8 +71,9 @@ h1 {
 }
 
 .subtitle {
-    font-size: 1.125rem;
+    font-size: 1.075rem;
     color: var(--text-secondary);
+    line-height: 1.6;
 }
 
 /* CTA Buttons */
@@ -67,10 +90,12 @@ h1 {
     font-size: 1.125rem;
 }
 
+/* Main */
 main {
     flex: 1;
 }
 
+/* Upload section */
 .upload-section {
     margin-bottom: 2rem;
 }
@@ -78,19 +103,20 @@ main {
 .upload-area {
     background: var(--surface);
     border: 2px dashed var(--border);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 4rem 2rem;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    box-shadow: var(--shadow);
 }
 
 .upload-area:hover {
     border-color: var(--primary-color);
     background: #f8f9ff;
     transform: translateY(-2px);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lg);
 }
 
 .upload-area.drag-over {
@@ -100,7 +126,7 @@ main {
 }
 
 .upload-icon {
-    font-size: 4rem;
+    font-size: 3.75rem;
     margin-bottom: 1rem;
 }
 
@@ -123,6 +149,7 @@ main {
     color: var(--text-secondary);
 }
 
+/* Preview section */
 .preview-section {
     margin-top: 2rem;
 }
@@ -136,7 +163,7 @@ main {
 
 .preview-box {
     background: var(--surface);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 1.5rem;
     box-shadow: var(--shadow);
 }
@@ -154,7 +181,7 @@ main {
     width: 100%;
     padding-top: 100%;
     background: #f1f5f9;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
 }
 
@@ -165,9 +192,10 @@ main {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 12px;
 }
 
+/* Loading state */
 .loading-state {
     position: absolute;
     top: 50%;
@@ -199,6 +227,7 @@ main {
     }
 }
 
+/* Action buttons */
 .action-buttons {
     display: flex;
     gap: 1rem;
@@ -206,12 +235,13 @@ main {
     flex-wrap: wrap;
 }
 
+/* Buttons */
 .btn {
     padding: 0.75rem 2rem;
     font-size: 1rem;
     font-weight: 600;
     border: none;
-    border-radius: 8px;
+    border-radius: 999px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
@@ -219,14 +249,14 @@ main {
 }
 
 .btn-primary {
-    background: var(--primary-color);
-    color: white;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.16);
 }
 
 .btn-primary:hover {
-    background: var(--primary-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+    box-shadow: 0 18px 30px rgba(37, 99, 235, 0.25);
 }
 
 .btn-secondary {
@@ -241,6 +271,7 @@ main {
     transform: translateY(-2px);
 }
 
+/* Error message */
 .error-message {
     background: #fee2e2;
     border: 1px solid #fecaca;
@@ -255,7 +286,7 @@ main {
     font-weight: 500;
 }
 
-/* Benefits Section */
+/* Benefits section */
 .benefits-section {
     margin: 4rem 0;
     padding: 3rem 0;
@@ -270,7 +301,7 @@ main {
 
 .benefit-card {
     background: var(--surface);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 2rem;
     text-align: center;
     box-shadow: var(--shadow);
@@ -299,7 +330,7 @@ main {
     line-height: 1.6;
 }
 
-/* SEO Text Section */
+/* SEO text */
 .seo-text-section {
     margin: 2rem 0 3rem;
 }
@@ -312,7 +343,7 @@ main {
     font-size: 0.975rem;
 }
 
-/* Features Section */
+/* Features */
 .features-section {
     margin: 4rem 0;
     padding: 3rem 0;
@@ -323,7 +354,7 @@ main {
     align-items: flex-start;
     gap: 1.5rem;
     background: var(--surface);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 2rem;
     margin-bottom: 1.5rem;
     box-shadow: var(--shadow);
@@ -352,13 +383,14 @@ main {
     line-height: 1.7;
 }
 
-/* Why Choose Us Section */
+/* Why choose us */
 .why-choose-section {
     margin: 4rem 0;
     padding: 3rem 2rem;
     text-align: center;
     background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
-    border-radius: 16px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
 }
 
 .why-choose-section h2 {
@@ -376,7 +408,7 @@ main {
     margin: 0 auto;
 }
 
-/* Info Section */
+/* Info section */
 .info-section {
     margin: 4rem 0;
     padding: 3rem 0;
@@ -390,7 +422,7 @@ main {
 
 .info-card {
     background: var(--surface);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 2rem;
     text-align: center;
     box-shadow: var(--shadow);
@@ -451,7 +483,27 @@ footer {
     font-size: 0.875rem;
 }
 
-/* Responsive Design */
+/* Blog pages */
+.blog-list ul {
+    list-style: none;
+    margin-top: 1.25rem;
+}
+
+.blog-list li {
+    margin-bottom: 0.75rem;
+}
+
+.blog-list a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.blog-list a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     h1 {
         font-size: 1.9rem;
@@ -459,6 +511,16 @@ footer {
 
     .subtitle {
         font-size: 0.95rem;
+    }
+
+    header {
+        padding-top: 2.5rem;
+    }
+
+    .main-nav {
+        position: static;
+        justify-content: center;
+        margin-bottom: 1rem;
     }
 
     .cta-buttons {
@@ -533,4 +595,3 @@ footer {
         padding: 2rem 1rem;
     }
 }
-
